@@ -1,0 +1,31 @@
+
+1º Step create virtual network
+
+   docker network create my_app_net2
+
+2º Step create two containers
+
+   docker container run --name esearch1 -d --network my_app_net2 --network-alias search elasticsearch:2
+   docker container run --name esearch2 -d --network my_app_net2 --network-alias search elasticsearch:2
+
+3º Check DNS Round Robin with alpine
+
+   docker container run --rm -it --network my_app_net2 alpine nslookup search.
+
+   Non-authoritative answer:
+   Name:	search
+   Address: 172.19.0.2
+   Name:	search
+   Address: 172.19.0.3
+
+4º Check DNS Round Robin with Centos curl
+
+   docker container run --rm -it --network my_app_net2 centos:7 curl -s search:9200
+
+   // You can check differents names if you execute serveral times the last command
+
+1_freya_1
+
+url: hub.docker.com
+user: ddlarosa
+password: 1_freya_1
